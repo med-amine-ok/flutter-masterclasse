@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_task/Ui/screens/home.dart';
 import 'package:flutter_task/Ui/screens/profile.dart';
 import 'package:flutter_task/Ui/screens/search.dart';
-
+import 'package:flutter_task/Ui/screens/reels.dart';
 
 class ViewManager extends StatefulWidget {
   const ViewManager({Key? key}) : super(key: key);
@@ -19,6 +19,7 @@ class _ViewManagerState extends State<ViewManager> {
     const HomeScreen(),
     const SearchScreen(),
     const ProfileScreen(),
+    const ReelsScreen(),
   ];
 
   @override
@@ -53,6 +54,14 @@ class _ViewManagerState extends State<ViewManager> {
               color: Colors.black,
             ),
             label: 'Search',
+          ),
+          const BottomNavigationBarItem(
+            icon: Icon(
+                Icons.video_call,
+              size: 25,
+              color: Colors.black,
+            ),
+            label: 'Reels',
           ),
           const BottomNavigationBarItem(
             icon: Icon(

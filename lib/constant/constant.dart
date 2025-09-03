@@ -2,33 +2,31 @@ import 'package:flutter_task/model/post.dart';
 
 final List<PostModel> posts = [
   PostModel(
-    userName: 'imihirpaldhikar',
-    profilePic: 'assets/images/profile.jpg',
+    userName: 'medamie',
+    profilePic: 'assets/images/default.jpg',
     likes: 230,
     comments: 40,
+    postUrl: 'assets/images/default.jpg',
     postDesc: 'A visit to the natures park!!',
     uploadedOn: '12 minutes',
-    
   ),
   PostModel(
     userName: 'john',
-    profilePic: 'assets/images/p4.jpg',
+    profilePic: 'assets/images/instagram.jpg',
     likes: 30,
     comments: 10,
-    
+    postUrl: 'assets/images/instagram.webp',
     postDesc: 'Awesomeness!',
     uploadedOn: '27 minutes',
-    
   ),
   PostModel(
-    userName: 'mark_rober',
+    userName: 'mooh',
     profilePic: 'assets/images/p3.jpg',
     likes: 230,
     comments: 40,
-    
+    postUrl: 'assets/images/instagram.webp',
     postDesc: 'No Comments!!',
     uploadedOn: '45 minutes',
-    
   ),
   PostModel(
     userName: 'mrbeast',
@@ -38,6 +36,5 @@ final List<PostModel> posts = [
     postUrl: 'assets/images/post5.jpg',
     postDesc: '#TeamSeas',
     uploadedOn: '2 minutes',
-    
   ),
 ];

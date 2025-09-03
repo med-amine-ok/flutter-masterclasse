@@ -26,12 +26,9 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 height: 40,
                 width: 120,
-                child: const Text(
-                  'Instagram',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: const Image(
+                  image: AssetImage('assets/images/instagram.webp'),
+                  fit: BoxFit.cover,
                 ),
               ),
               const Row(
@@ -100,21 +97,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       Container(
                         width: MediaQuery.of(context).size.width,
                         height: 300, // Fixed height for images
-                        child: posts[index].postUrl != null
-                          ? Image.asset(
-                            posts[index].postUrl!,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Image.asset(
-                              'assets/images/Screenshot_20250827_020557_Instagram.jpg',
-                              fit: BoxFit.cover,
-                              );
-                            },
-                            )
-                          : Image.asset(
+                        child: Image.asset(
+                          posts[index].postUrl ?? 'assets/images/Screenshot_20250827_020557_Instagram.jpg',
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
                             'assets/images/Screenshot_20250827_020557_Instagram.jpg',
                             fit: BoxFit.cover,
-                            ),
+                          );
+                          },
+                        ),
                       ),
                       const SizedBox(height: 10),
                       Padding(
@@ -140,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: Text(
-                          '${posts[index].likes.toString()} likes, liked by imihirpaldhikar and ${posts[index].likes - 1} others',
+                          '${posts[index].likes.toString()} likes, liked by me and ${posts[index].likes - 1} others',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
