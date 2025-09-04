@@ -1,8 +1,8 @@
 class PostModel {
   final String userName;
   final String profilePic;
-  final int likes;
-  final int comments;
+  final int likesCount;
+  final int commentsCount;
   final String postDesc;
   final String uploadedOn;
   final String? postUrl;
@@ -11,8 +11,8 @@ class PostModel {
 
     required this.userName,
     required this.profilePic,
-    required this.likes,
-    required this.comments,
+    required this.likesCount,
+    required this.commentsCount,
     required this.postDesc,
     required this.uploadedOn,
     this.postUrl,

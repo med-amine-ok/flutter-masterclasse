@@ -4,8 +4,8 @@ final List<PostModel> posts = [
   PostModel(
     userName: 'medamie',
     profilePic: 'assets/images/default.jpg',
-    likes: 230,
-    comments: 40,
+    likesCount: 230,
+    commentsCount: 40,
     postUrl: 'assets/images/default.jpg',
     postDesc: 'A visit to the natures park!!',
     uploadedOn: '12 minutes',
@@ -13,8 +13,8 @@ final List<PostModel> posts = [
   PostModel(
     userName: 'john',
     profilePic: 'assets/images/instagram.jpg',
-    likes: 30,
-    comments: 10,
+    likesCount: 30,
+    commentsCount: 10,
     postUrl: 'assets/images/instagram.webp',
     postDesc: 'Awesomeness!',
     uploadedOn: '27 minutes',
@@ -22,8 +22,8 @@ final List<PostModel> posts = [
   PostModel(
     userName: 'mooh',
     profilePic: 'assets/images/p3.jpg',
-    likes: 230,
-    comments: 40,
+    likesCount: 230,
+    commentsCount: 40,
     postUrl: 'assets/images/instagram.webp',
     postDesc: 'No Comments!!',
     uploadedOn: '45 minutes',
@@ -31,8 +31,8 @@ final List<PostModel> posts = [
   PostModel(
     userName: 'mrbeast',
     profilePic: 'assets/images/p4.jpg',
-    likes: 23000,
-    comments: 400,
+    likesCount: 23000,
+    commentsCount: 400,
     postUrl: 'assets/images/post5.jpg',
     postDesc: '#TeamSeas',
     uploadedOn: '2 minutes',
