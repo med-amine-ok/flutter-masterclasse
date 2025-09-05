@@ -18,8 +18,8 @@ class _ViewManagerState extends State<ViewManager> {
   final List<Widget> _screens = [
     const HomeScreen(),
     const SearchScreen(),
-    const ProfileScreen(),
     const ReelsScreen(),
+    const ProfileScreen(),
   ];
 
   @override

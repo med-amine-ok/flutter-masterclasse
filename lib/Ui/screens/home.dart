@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_task/constant/constant.dart';
-import 'package:flutter_task/widgets/commentsection.dart';
+import 'package:flutter_task/model/post.dart';
+import 'package:flutter_task/widgets/instacard.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -40,7 +42,9 @@ class _HomeScreenState extends State<HomeScreen> {
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [Icon(Icons.send, size: 30, color: Colors.black)],
+                children: [
+                  Icon(Icons.send, size: 30, color: Colors.black)
+                ],
               ),
             ],
           ),
@@ -54,152 +58,48 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 20),
-            // Remove fixed height, let ListView.builder size itself
-            ListView.builder(
-              shrinkWrap:
-                  true, // Important: This makes ListView take only needed space
-              physics:
-                  const NeverScrollableScrollPhysics(), // Disable ListView scrolling since parent is scrollable
-              itemCount: posts.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  margin: const EdgeInsets.only(bottom: 20),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Row(
-                              children: [
-                                const CircleAvatar(
-                                  backgroundImage: AssetImage(
-                                    'assets/images/default.jpg',
-                                  ), // Replace with your asset path
-                                  radius: 20,
-                                ),
-                                const SizedBox(width: 10),
-                                Text(
-                                  posts[index].userName,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 13,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const Icon(Icons.more_vert_outlined),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      // Handle image with proper error handling
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 300, // Fixed height for images
-                        child: Image.asset(
-                          posts[index].postUrl ??
-                              'assets/images/Screenshot_20250827_020557_Instagram.jpg',
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Image.asset(
-                              'assets/images/Screenshot_20250827_020557_Instagram.jpg',
-                              fit: BoxFit.cover,
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.favorite_border_outlined,
-                                  size: 25,
-                                ),
-                                const SizedBox(width: 6),
-                                posts[index].likesCount == 0
-                                    ? const Text('Likes')
-                                    : Text('${posts[index].likesCount}'),
-                                const SizedBox(width: 15),
-                                CommentSection(post: posts[index]),
-                                const SizedBox(width: 15),
-                                const Icon(Icons.send_outlined, size: 22),
-                              ],
-                            ),
-                            const Icon(
-                              Icons.bookmark_border_outlined,
-                              size: 25,
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15, top: 5),
-                        child: Wrap(
-                          // Use Wrap to prevent overflow
-                          children: [
-                            Text(
-                              posts[index].userName,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                              ),
-                            ),
-                            const SizedBox(width: 5),
-                            Text(
-                              posts[index].postDesc,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.normal,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15, top: 7),
-                        child: Text(
-                          'View all ${posts[index].commentsCount} Comments',
-                          style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            color: Colors.grey.shade600,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15, top: 5),
-                        child: Text(
-                          '${posts[index].uploadedOn} ago',
-                          style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            color: Colors.grey.shade600,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
+            FutureBuilder<List<PostModel>>(
+              future: fetchPosts(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(child: Text('No posts available'));
+                } else {
+                  final posts = snapshot.data!;
+                  return ListView.builder(
+                    shrinkWrap: true, // Important: This makes ListView take only needed space
+                    physics: const NeverScrollableScrollPhysics(), // Disable ListView scrolling since parent is scrollable
+                    itemCount: posts.length,
+                    itemBuilder: (context, index) {
+                      return InstagramCard(post: posts[index]);
+                    },
+                  );
+                }
               },
             ),
           ],
         ),
       ),
     );
+  }
+}
+
+Future<List<PostModel>> fetchPosts() async {
+  try {
+    final response = await http
+        .get(Uri.parse('https://jsonplaceholder.typicode.com/posts'))
+        .timeout(const Duration(seconds: 5));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      return data.map((post) => PostModel.fromJson(post)).toList();
+    } else {
+      throw Exception('Failed to load posts');
+    }
+  } catch (e) {
+    throw Exception('Error fetching posts: $e');
   }
 }
